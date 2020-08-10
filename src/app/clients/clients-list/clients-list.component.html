@@ -1,0 +1,84 @@
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <div class="row">
+            <div class="col-md-6 text-left">
+                <h2>CLIENTES</h2>
+            </div>
+            <div class="col-md-6 text-right">
+                <button class="btn btn-warning" (click)="showAdd()">Agregar</button>
+            </div>
+
+        </div>
+    </div>
+    <div class="panel-body table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Nombre</th>
+                    <th>NIT</th>
+                    <th>Dirección</th>
+                    <th>Fecha Nacimiento</th>
+                    <th>Opciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let client of clients">
+                    <td></td>
+                    <td>{{client.clientDesc}}</td>
+                    <td>{{client.nit}}</td>
+                    <td>{{client.address}}</td>
+                    <td>{{client.birthday | date: 'dd/MM/yyyy'}}</td>
+                    <td>
+                        <button (click)="showEdit(client.clientId)" class="btn btn-info" style="margin-left: 10px">Editar</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="container" *ngIf="isAdd">
+    <h3>{{ (isEdit) ? 'Actualizar' : 'Crear'}} Cliente</h3>
+    <div style="width: 400px;">
+        <form [formGroup]="formClient" #formDirective="ngForm">
+            <!-- <div class="form-group">
+                <label for="name">Nombre</label>
+                <input type="text" class="form-control" id="firstName" required name="firstName">
+            </div> -->
+
+            <mat-form-field class="col-md-12">
+                <mat-label>Nombre</mat-label>
+                <input formControlName="clientDesc" matInput placeholder="Nombre" type="text">
+            </mat-form-field>
+
+            <mat-form-field class="col-md-12">
+                <mat-label>NIT</mat-label>
+                <input formControlName="nit" matInput placeholder="NIT" type="text">
+            </mat-form-field>
+
+            <mat-form-field class="col-md-12">
+                <mat-label>Dirección</mat-label>
+                <input formControlName="address" matInput placeholder="Dirección" type="text">
+            </mat-form-field>
+
+            <mat-form-field class="col-md-12">
+                <mat-label>Telefono</mat-label>
+                <input formControlName="phone" matInput placeholder="Teléfono" type="number">
+            </mat-form-field>
+
+            <!-- <mat-form-field class="col-md-12">
+                <mat-label>Fecha de Nacimiento</mat-label>
+                <input formControlName="birthday" matInput placeholder="Fecha de Nacimiento" type="text">
+            </mat-form-field> -->
+            <mat-form-field class="col-md-12">
+                <input matInput [matDatepicker]="pickerEndDate" placeholder="Seleccione fecha fin" formControlName="birthday" required>
+                <mat-datepicker-toggle matSuffix [for]="pickerEndDate"></mat-datepicker-toggle>
+                <mat-datepicker #pickerEndDate></mat-datepicker>
+            </mat-form-field>
+
+            <button type="button" class="btn btn-success" (click)="save()">Guardar</button>
+            <button type="button" class="btn btn-danger m-1" (click)="cancel()">Cancelar</button>
+        </form>
+    </div>
+</div>

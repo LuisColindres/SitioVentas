@@ -1,0 +1,177 @@
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <div class="row">
+            <div class="col-md-6 text-left">
+                <h2>VENTAS</h2>
+            </div>
+            <div class="col-md-6 text-right">
+                <button class="btn btn-warning" (click)="showAdd()">Agregar</button>
+            </div>
+
+        </div>
+    </div>
+    <div class="panel-body table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Cliente</th>
+                    <th>Total</th>
+                    <th>Estado</th>
+                    <th>Opciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let sale of sales; let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{sale.tcClient.clientDesc}}</td>
+                    <td>{{sale.total | currency:'GTQ'}}</td>
+                    <td>{{sale.statusId}}</td>
+                    <td>
+                        <button class="btn btn-info" style="margin-left: 10px">Editar</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="container" *ngIf="isAdd">
+    <h3>Crear Venta</h3>
+    <div class="row">
+        <div class="col-md-9">
+            <div class="card">
+                <div class="card-header bg-info">
+                    <h5 class="m-b-0 text-white">
+                        Productos Agregados
+                    </h5>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table product-overview table-hover">
+                        <thead>
+                            <tr>
+                                <th width="10">#</th>
+                                <th width="125">Producto</th>
+                                <th width="40">Cantidad</th>
+                                <th width="60">Precio</th>
+                                <th width="90">Total</th>
+                                <th width="75">Opciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of formSale.get('detail').value; let i = index;">
+                                <td>
+                                    {{ i + 1 }}
+                                </td>
+                                <td>
+                                    {{ item.product }}
+                                </td>
+                                <td>
+                                    {{ item.amount }}
+                                </td>
+                                <td>
+                                    {{ item.price }}
+                                </td>
+                                <td>
+                                    {{ item.total }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-lg-3">
+            <form [formGroup]="formSale">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Datos del Cliente</h5>
+                    </div>
+                    <div class="card-body">
+                        <mat-form-field class="col-md-12">
+                            <mat-label>Cliente</mat-label>
+                            <mat-select formControlName="clientId" required>
+                                <mat-option *ngFor="let option of clients" [value]="option.clientId">
+                                    {{option.clientDesc}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </form>
+
+            <hr>
+
+            <form [formGroup]="formProduct">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Productos</h5>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="row">
+                            <mat-form-field class="col-md-12">
+                                <mat-label>Productos</mat-label>
+                                <mat-select (selectionChange)="getPrice()" formControlName="productId" required>
+                                    <mat-option *ngFor="let option of products" [value]="option.productId">
+                                        {{option.productDesc}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                            <mat-form-field class="col-md-6">
+                                <mat-label>Precio</mat-label>
+                                <span matPrefix>Q &nbsp;</span>
+                                <input formControlName="price" matInput #price>
+                            </mat-form-field>
+
+                            <mat-form-field class="col-md-12">
+                                <mat-label>Cantidad</mat-label>
+                                <input formControlName="amount" matInput placeholder="Cantidad" type="number">
+                            </mat-form-field>
+                        </div>
+
+                        <div class="button-row">
+                            <button mat-raised-button [disabled]="!formProduct.valid">
+                              <!-- {{ isEditProduct ? 'Actualizar' : 'Agregar' }} -->
+                              Agregar
+                            </button>
+                            <button class="m-1" mat-raised-button type="button" color="warn">
+                              Cancelar
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+    <pre>{{ formProduct.value | json }}</pre>
+    <!-- <h3>Crear Cliente</h3>
+    <div style="width: 400px;">
+        <form>
+            <div class="form-group">
+                <label for="name">First Name</label>
+                <input type="text" class="form-control" id="firstName" required name="firstName">
+            </div>
+
+            <div class="form-group">
+                <label for="name">Last Name</label>
+                <input type="text" class="form-control" id="lastName" required name="lastName">
+            </div>
+
+            <div class="form-group">
+                <label for="name">First Name</label>
+                <input type="text" class="form-control" id="emailId" required name="emailId">
+            </div>
+
+            <button type="submit" class="btn btn-success">Guardar</button>
+            <button type="submit" class="btn btn-danger m-1" (click)="cancel()">Cancelar</button>
+        </form>
+    </div> -->
+</div>
